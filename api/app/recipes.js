@@ -1,14 +1,15 @@
 const express = require('express');
 const auth = require('../middleware/auth');
 const permit = require('../middleware/permit');
+const checkUser = require('../middleware/checkUser');
 const upload = require('../multer').uploads;
 const Recipes = require('../models/Recipes');
 const router = express.Router();
 
-router.get('/',auth, async (req, res) => {
-    let params = {
-        $and: [{publish: true}, {user: req.user._id}]
-    };
+router.get('/',checkUser, async (req, res) => {
+    let params = {publish: true};
+
+    try{
     if (req.query.id) {
         params = {user: req.query.id};
 
@@ -17,17 +18,14 @@ router.get('/',auth, async (req, res) => {
         params = {};
     }
 
-
-    try{
-        const items = await Recipes.find(params).populate('user');
-
+    const items = await Recipes.find(params).populate('user');
        return  res.send(items);
     }catch (e) {
         return res.status(400).send(e);
     }
 
 });
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const items = await Recipes.findById(req.params.id);
         res.send(items);

@@ -31,6 +31,7 @@ export default function MediaCard(props) {
 
     return (
         <Card className={classes.root}>
+
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -44,7 +45,7 @@ export default function MediaCard(props) {
                     </Typography>
                 </CardContent>
             </CardActionArea>
-           {props.role === 'admin' ? <CardActions>
+           {props.user && props.user.role === 'admin' ? <CardActions>
                 <Button onClick={()=>dispatch(props.remove(props.id))} size="small" color="primary">
                    Remove
                 </Button>

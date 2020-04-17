@@ -12,7 +12,7 @@ const Main = (props) => {
         dispatch(getRecipes(props.match.params.id))
     }, [dispatch, props.match.params.id]);
 
-    return user && (
+    return (
         <div className="main">
 
             {recipes.map(res => (
@@ -22,7 +22,7 @@ const Main = (props) => {
                         remove={deleteCocktail}
                         image={res.image}
                         name={res.name}
-                        role={user.role}
+                        user={user}
                         id={res._id}
                         published={res.publish}
                     />
